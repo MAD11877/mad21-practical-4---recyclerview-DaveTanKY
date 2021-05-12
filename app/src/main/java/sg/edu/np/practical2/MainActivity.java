@@ -27,34 +27,23 @@ public class MainActivity extends AppCompatActivity {
         Button follow = findViewById(R.id.followBtn);
         Button message = findViewById(R.id.messageBtn);
 
-        user newUser = new user("Dave", "Description about Dave", 1, false, 20);
+//        user newUser = new user("Dave", "Description about Dave", 1, false, 20);
 
 
         Intent receivingEnd = getIntent();
-        int randomInt = receivingEnd.getIntExtra("randomInt",0);
+        int userID = receivingEnd.getIntExtra("id",0);
+        user clickedUser = ListActivity.obj.get(userID);
 
         message.setText("MESSAGE");
-        name.setText(newUser.name + randomInt);
-        desc.setText(newUser.desc);
+        name.setText(clickedUser.name);
+        desc.setText(clickedUser.desc);
 
 
-        ArrayList<user> data = new ArrayList<user>();
-        for(int i = 0; i < 20; i++)
-        {
-            user u = new user();
-            u.setAge(i+1);
-            u.setName("Name " + i);
 
-            data.add(u);
-        }
 
-        RecyclerView rv = findViewById(R.id.rv);
-        UserAdapter adapter = new UserAdapter( this, data);
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        rv.setLayoutManager(lm);
-        rv.setAdapter(adapter);
 
-        if (newUser.followed == false)
+
+        if (clickedUser.followed == false)
         {
             follow.setText("FOLLOW");
         }
@@ -69,17 +58,17 @@ public class MainActivity extends AppCompatActivity {
                 Context context = getApplicationContext();
                 CharSequence toastMessage = "";
                 int duration = Toast.LENGTH_SHORT;
-                if(newUser.followed == true)
+                if(clickedUser.followed == true)
                 {
                     toastMessage = "Unfollowed";
                     follow.setText("FOLLOW");
-                    newUser.followed = false;
+                    clickedUser.followed = false;
                 }
                 else
                 {
                     toastMessage = "Followed";
                     follow.setText("UNFOLLOW");
-                    newUser.followed = true;
+                    clickedUser.followed = true;
                 }
                 Toast toast = Toast.makeText(context, toastMessage, duration);
                 toast.show();
